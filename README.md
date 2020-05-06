@@ -4,7 +4,7 @@
 
 &nbsp;&nbsp;[<b>1.1 Design Goals</b>](#11-design-goals)
 
-&nbsp;&nbsp;[<b>1.2 Event of Changes</b>](#12-event-of-chaanges)
+&nbsp;&nbsp;[<b>1.2 Events of Changes</b>](#12-events-of-chaanges)
 
 &nbsp;&nbsp;&nbsp;&nbsp;[1.2.1 Business Events](#121-business-events)
 
@@ -29,9 +29,9 @@
 &nbsp;&nbsp;[<b>2.2 EDP Development</b>](#22-edp-Development)
 
  
-# 1 API Data Service Design
+## 1 API Data Service Design
 
-## 1.1 Design Goals
+### 1.1 Design Goals
 
 The main goal of this design effort is to define architecture patterns to synchronize domain data between TFS’s main systems: Systems of Records (SoR), Enterprise Data Platform (EDP), and Enterprise Service Platform (ESP), as shown in Figure 1.
 
@@ -73,7 +73,7 @@ Figure 2: Data Services Domain – Four Tier Architecture View
 
 To develop the design, we will analyze the events that can result in domain data inconsistences. Based on that analysis we will design the ESP and EDP components to address the challenges. 
 
-## 1.2	Events of Changes 
+### 1.2 Events of Changes
 
 There are two major events in the domain that can result in data inconsistent states:
 * Business Events:  Customers, Dealers, and CBS make changes to SoR in real-time leaving EDP data in inconsistent state, 
@@ -81,7 +81,7 @@ There are two major events in the domain that can result in data inconsistent st
 
 The following sections discuss these cases in more details and propose design solutions that address the challenges. 
 
-### 1.2.1	Business Events
+#### 1.2.1 Business Events
 
 Starting from a consistent state shown in Figure 1, real-time Business Events that change the SoRs states might leave EDP data in inconsistent state as shown in Figure 2.
 
@@ -106,7 +106,7 @@ Typically, amount of data changed during Business Events is not large, so we sel
 * Reduced load on the ESP system. 
 * All events and related domain changes are persisted in event and change logs respectively.
 
-### 1.2.2	Data Events
+#### 1.2.2 Data Events
 
 SoRs update periodically EDP data leaving ESP data in inconsistent state as shown in Figure 5.
 
@@ -140,7 +140,7 @@ Figure 7 documents our Event-Driven Data Services Architecture that includes all
 ![](images_ds/data-access-services-four-tier-arch-full.png)
 Figure 7: Event-Driven Four-Tier Data Service Architecture
 
-### 1.2.3	Data Quality Service
+#### 1.2.3 Data Quality Service
 
 To ensure data integrity we will develop Data Quality Service which will validate date consistency across SoR, EDP, ESP and document inconsistencies. 
 
@@ -148,12 +148,14 @@ The service will be generic, and it will utilize externalized data schemas of th
 
 We will consider implementing the service utilizing AWS Serverless Framework.
 
-## 1.3	Detail Design
+### 1.3 Detail Design
+
 The following sections document detail design of the components shown in Figure 7.
 
-### 1.3.1	Delivery Services
+#### 1.3.1 Delivery Services
 
-#### 1.3.1.1	Design
+##### 1.3.1.1 Design
+
 
 Delivery tier is modeled based on Backend for Frontend (BFF) Pattern. Delivery tier implements only data filtering and transforming – domain or business logic should not be implemented in this tier. 
 
@@ -165,7 +167,7 @@ Figure 8: Delivery Service Design
 
 The Processor receives a request, calls appropriate Aggregate Service, uses *\<BFFSchema\>*  and *\<AggregateSchema\>* to performs filtering and returns the result to the requester. 
 
-#### 1.3.1.2	Implementation via Templating
+##### 1.3.1.2 Implementation via Templating
 
 We will develop the Service Template and Registration Service for the Request/Response Pattern as shown in Figure 9.
 
@@ -174,9 +176,9 @@ Figure 9: Request/Response Pattern Template
 
 Once developed we can use the Service Template to deploy a Template instance of any Delivery Service. To specialize the Template instance of the Delivery Service to the specific instance’s needs we use *\<BFFSchema\>*, *\<AggregateSchema\>* and modify *BFFHandler*  component as needed. 
 
-### 1.3.2	Aggregate Services
+#### 1.3.2 Aggregate Services
 
-#### 1.3.2.1	Design
+##### 1.3.2.1 Design
 
 An Aggregate Service design is based on the Request/Response Pattern as shown in Figure 10. 
 
@@ -186,12 +188,14 @@ Figure 10: Aggregation Service Design
 
 The Processor uses *\<ProcessingJSON\>* and appropriate *ProcessingHandlers* to implement the instance specific processing logic.
 
-#### 1.3.2.2	Implementation via Templating
+##### 1.3.2.2 Implementation via Templating
+
 A template instance of an Aggregate Service can be instantiated using the Request/Response Pattern Template. To deploy a specific instance of an Aggregate Service we start from the Template and implement the instance specific processing logic in *ProcessingHandlers* utilizing *\<ProcessingJSON\>* and schemas: *\<AggregateSchema\>* and *\<ServiceSchema\>*.
 
-### 1.3.3	Data Service Design – ESP View 
+#### 1.3.3 Data Service Design: ESP View
 
-#### 1.3.3.1	Design Option 1 – ‘Delta’ Cache Update 
+##### 1.3.3.1 Design Option 1: Delta Cache update
+
 Data Service design is shown in Figure 11.
 
 ![](images_ds/data-service-design-option1.png)
@@ -230,7 +234,7 @@ Event processing walkthrough is as follows:
 
 Note on Event-Sourcing: All events and associated changes are persisted in Event and Change Logs respectively. 
 
-#### 1.3.3.2	Design Option 2 – Full Cache Update 
+##### 1.3.3.2 Design Option 2: Full Cache Update
 
 Data Service design in this case is shown in Figure 13. 
 
@@ -241,7 +245,7 @@ The main difference between Option 1 and 2 is related to processing EDP updates.
 Obviously, Option 2 is might be demanding from both processing time and computational resources demanding and as such it needs to be exercised with caution. 
 Note that the same Data Service might support both Options 1 & 2 functionality.
 
-#### 1.3.3.3	Design Option 3 – Materialization into ESP Cache 
+##### 1.3.3.3 Design Option 3: Materialization into ESP Cache
 
 Data Service design in this case is shown in Figure 14.
 
@@ -250,7 +254,7 @@ Figure 14: Data Service API Design – Option 3
 
 This design proposes the use of Materialization Egress Pipeline to materialize full collection directly in the ESP Cache. The main benefits of this design include reduced number of transformation hops and considerable saving in storage space (MongoDB storage is not inexpensive). 
 
-#### 1.3.3.4	Implementation via Templating
+##### 1.3.3.4 Implementation via Templating
 
 We will develop the Service Template and Registration Service for the Data Service Pattern as shown in Figure 15.
 
@@ -260,7 +264,7 @@ Figure 15: Data Service Pattern Template
 
 Once developed we can use the Service Template to deploy a Template instance of any Data Service. To specialize the Template instance of the Data Service to the specific instance’s needs we use *\<DataServiceSchemas\>* and modify *DataServicesHandlers* as needed. 
 
-### 1.3.4	Data Service Design – EDP View 
+#### 1.3.4 Data Service Design: EDP View
 
 EDP design in support of Data Services is shown in Figure 16.
 
@@ -286,10 +290,9 @@ Event processing walkthrough is as follows:
  1. Changes to the ESP Cached data result in raising Business Events that are  published on corresponding Business Event Bus
  2.The Business Events are consumed asynchronously by subscribers including EDP Business Event Handler.
 
+## 2 Development Analysis
 
-# 2	Development Analysis
-
-## 2.1	ESP Development 
+### 2.1 ESP Development
 
 |Development Task	|Type|	Complexity|
 |----|:------|:-------|
@@ -302,8 +305,7 @@ Event processing walkthrough is as follows:
 |Deploy specific instance of Data Service. Start from the Template and implement instance specific processing logic in *DataServicesHandlers* utilizing *\<DataServiceSchemas\>* schemas.	|Per Data Service Instance	| |
 |Develop Data Quality Service that uses *\<SoRSchema\>*, *\<ServiceSchema\>* and *\<MaterializationSchema\>* to  validate date consistency across SoR, EDP, ESP and document inconsistencies. 	| Potentially Lambda function.	| |
 
-
-## 2.2	EDP Development
+### 2.2 EDP Development
 
 |Development Task	|Type	|Complexity|
 |------|:-------|:-------|
