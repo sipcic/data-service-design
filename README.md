@@ -1,32 +1,32 @@
 # Table of Contents
 
-[<b>1 API Data Service Design</b>](#api-data-service-design)
+[<b>1 API Data Service Design</b>](#1-api-data-service-design)
 
-[<b>1.1 Design Goals</b>](#11design-goals)
+&nbsp;&nbsp;[<b>1.1 Design Goals</b>](#11-design-goals)
 
-[<b>1.2 Event of Changes</b>](#event-of-chaanges)
+&nbsp;&nbsp;[<b>1.2 Event of Changes</b>](#12-event-of-chaanges)
 
-[1.2.1 Business Events](#business-events)
+&nbsp;&nbsp;&nbsp;&nbsp;[1.2.1 Business Events](#121-business-events)
 
-[1.2.2 Data Events](#1.2.2-data-Events)
+&nbsp;&nbsp;&nbsp;&nbsp;[1.2.2 Data Events](#122-data-Events)
 
-[1.2.3 Data Quality Service](#data-quality-service)
+&nbsp;&nbsp;&nbsp;&nbsp;[1.2.3 Data Quality Service](#123-data-quality-service)
 
-[<b>1.3 Detail Design</b>](#detail-design)
+&nbsp;&nbsp;[<b>1.3 Detail Design</b>](#13-detail-design)
 
-[1.3.1 Delivery Services](#delivery-services)
+&nbsp;&nbsp;&nbsp;&nbsp;[1.3.1 Delivery Services](#131-delivery-services)
 
-[1.3.2 Aggregate Services](#aggregate-services)
+&nbsp;&nbsp;&nbsp;&nbsp;[1.3.2 Aggregate Services](#132-aggregate-services)
 
-[1.3.3 Data Service Design - ESP View](#data-service-design-esp-view)
+&nbsp;&nbsp;&nbsp;&nbsp;[1.3.3 Data Service Design - ESP View](#133-data-service-design-esp-view)
 
-[1.3.4 Data Service Design - EDP View](#data-service-design-edp-view)
+&nbsp;&nbsp;&nbsp;&nbsp;[1.3.4 Data Service Design - EDP View](#134-data-service-design-edp-view)
 
-[<b>2. Development Analysis</b>](#development-analysis)
+[<b>2. Development Analysis</b>](#2-development-analysis)
 
-[<b>2.1 ESP Development</b>](#esp-development)
+&nbsp;&nbsp;[<b>2.1 ESP Development</b>](#21-esp-development)
 
-[<b>2.2 EDP Development</b>](#edp-Development)
+&nbsp;&nbsp;[<b>2.2 EDP Development</b>](#22-edp-Development)
 
  
 # 1	API Data Service Design 
