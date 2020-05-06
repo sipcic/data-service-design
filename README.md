@@ -29,8 +29,10 @@
 &nbsp;&nbsp;[<b>2.2 EDP Development</b>](#22-edp-Development)
 
  
-# 1	API Data Service Design 
-## 1.1	Design Goals 
+# 1 API Data Service Design
+
+## 1.1 Design Goals
+
 The main goal of this design effort is to define architecture patterns to synchronize domain data between TFS’s main systems: Systems of Records (SoR), Enterprise Data Platform (EDP), and Enterprise Service Platform (ESP), as shown in Figure 1.
 
 ![](images_ds/data-access-services-problem-statement.png)
