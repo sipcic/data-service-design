@@ -4,7 +4,7 @@
 
 &nbsp;&nbsp;[<b>1.1 Design Goals</b>](#11-design-goals)
 
-&nbsp;&nbsp;[<b>1.2 Events of Changes</b>](#12-events-of-chaanges)
+&nbsp;&nbsp;[<b>1.2 Events of Changes</b>](#12-events-of-changes)
 
 &nbsp;&nbsp;&nbsp;&nbsp;[1.2.1 Business Events](#121-business-events)
 
@@ -18,9 +18,9 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;[1.3.2 Aggregate Services](#132-aggregate-services)
 
-&nbsp;&nbsp;&nbsp;&nbsp;[1.3.3 Data Service Design - ESP View](#133-data-service-design-esp-view)
+&nbsp;&nbsp;&nbsp;&nbsp;[1.3.3 Data Service Design: ESP View](#133-data-service-design-esp-view)
 
-&nbsp;&nbsp;&nbsp;&nbsp;[1.3.4 Data Service Design - EDP View](#134-data-service-design-edp-view)
+&nbsp;&nbsp;&nbsp;&nbsp;[1.3.4 Data Service Design: EDP View](#134-data-service-design-edp-view)
 
 [<b>2. Development Analysis</b>](#2-development-analysis)
 
@@ -74,6 +74,7 @@ Figure 2: Data Services Domain – Four Tier Architecture View
 To develop the design, we will analyze the events that can result in domain data inconsistences. Based on that analysis we will design the ESP and EDP components to address the challenges. 
 
 ### 1.2 Events of Changes
+
 
 There are two major events in the domain that can result in data inconsistent states:
 * Business Events:  Customers, Dealers, and CBS make changes to SoR in real-time leaving EDP data in inconsistent state, 
